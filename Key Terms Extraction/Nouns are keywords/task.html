@@ -1,0 +1,62 @@
+<h5 id="theory">Theory</h5>
+<p>The output from the last stage looks so much better! We can still improve the results, though: adverbs and adjectives don't always reflect the essence of the text. Nouns are very useful with this. In this stage, we will improve the result by using <strong>part-of-speech tagging</strong> (a POS-tag) to mark nouns as keywords. </p>
+<h5 id="description">Description</h5>
+<p>The task is similar to the previous ones: tokenize, eliminate meaningless words, and lemmatize. In addition to removing punctuation and stop words, remove all the non-noun words. You can use <code class="language-python">averaged_perceptron_tagger</code> for this. You need to load it first:</p>
+<pre><code class="language-python">nltk.download('averaged_perceptron_tagger')</code></pre>
+<p>Then, let's POS-annotate the pre-lemmatized text with the function below. Be sure that you tag the whole news article, not just one word or sentence.</p>
+<pre><code class="language-python">pos_tag(lemmatized_text)</code></pre>
+<p>And, voilà, we get POS tags. Now, sort your text so that there are only tokens with <code class="language-python">NN</code> in the result file.</p>
+<p> If the frequencies for some tokens are the same, then sort them in descending order. For example, for the following dictionary, where the keys are the names of fruits, and the values of the frequency of their occurrence:</p>
+<pre><code class="language-python">{"apple": 5, "lemon": 6, "banana": 5, "grapefruit": 1, "pineapple": 5, "watermelon": 3, "melon": 4, "dragonfruit": 5}</code></pre>
+<p>After sorting, the dictionary should be</p>
+<pre><code class="language-python">{"lemon": 6, "pineapple": 5, "dragonfruit": 5, "banana": 5, "apple": 5, "melon": 4, "watermelon": 3, "grapefruit": 1}</code></pre>
+<p>Take a look at the attached <a href="https://stepik.org/media/attachments/lesson/395600/news.xml" rel="noopener noreferrer nofollow" target="_blank">news file</a> and use it at this stage.</p>
+<h5 id="objectives">Objectives</h5>
+<p>In this stage, your program should:</p>
+<ol>
+<li>Read an XML-file containing news stories and headlines.</li>
+<li>Extract the headers and the text.</li>
+<li>Tokenize each text.</li>
+<li>Exclude the tokens that start with <code class="language-python">'</code>, stopwords, and punctuation marks.</li>
+<li>Lemmatize the remaining tokens in the story. Take into consideration only those lemmas, the length of which is bigger than 1.</li>
+<li>For each news story, find the most frequent nouns.</li>
+<li>Print each story's headline and the five most frequent nouns in descending order. Take a look at the sample below. Display the titles and keywords in the same order they are presented in the file.</li>
+</ol>
+<h5 id="examples">Examples</h5>
+<p> <strong>Example 1:</strong> <em>Input file structure</em></p>
+<pre><code class="language-xml">&lt;?xml version='1.0' encoding='UTF8'?&gt;
+&lt;data&gt;
+  &lt;corpus&gt;
+    &lt;news&gt;
+      &lt;value name="head"&gt;New Portuguese skull may be an early relative of Neandertals&lt;/value&gt;
+      &lt;value name="text"&gt;Half a million years ago, several different members of our genus, Homo, had spread throughout Europe and Asia, where some would eventually evolve into Neandertals.
+          But which ones has been the subject of intense debate.
+          A newly discovered partial skull is offering another clue to help solve the mystery of the ancestry of Neandertals.
+          Found in 2014 in the Gruta da Aroeira cave in central Portugal with ancient stone hand axes, the skull (3D reconstruction pictured) is firmly dated to 400,000 years old and an archaic member of our genus, according to a study published today in the Proceedings of the National Academy of Sciences.
+          The skull shows a new mix of features not seen before in fossil humans-it has traits that link it to Neandertals, such as a fused brow ridge, as well as some primitive traits that resemble other extinct fossils in Europe.
+          This new combination of features on a well-dated skull may help researchers sort out how different fossils in Europe are related to each other-and which ones eventually evolved into Neandertals.&lt;/value&gt;
+    &lt;/news&gt;
+    &lt;news&gt;
+      &lt;value name="head"&gt;Loneliness May Make Quitting Smoking Even Tougher&lt;/value&gt;
+      &lt;value name="text"&gt;Being lonely may make it harder to quit smoking, a new British study suggests.
+          Using genetic and survey data from hundreds of thousands of people, researchers found that loneliness makes it more likely that someone will smoke.
+          This type of analysis is called Mendelian randomization.
+          'This method has never been applied to this question before and so the results are novel, but also tentative,' said co-lead author Robyn Wootton, a senior research associate at the University of Bristol in the United Kingdom.
+          'We found evidence to suggest that loneliness leads to increased smoking, with people more likely to start smoking, to smoke more cigarettes and to be less likely to quit,' Wootton said in a university news release.
+          These data mesh with an observation that during the coronavirus pandemic, more British people are smoking.
+          Senior study author Jorien Treur said, 'Our finding that smoking may also lead to more loneliness is tentative, but it is in line with other recent studies that identified smoking as a risk factor for poor mental health.
+          A potential mechanism for this relationship is that nicotine from cigarette smoke interferes with neurotransmitters such as dopamine in the brain.'
+          Treur is a visiting research associate from Amsterdam UMC.
+          The researchers also looked for a connection between loneliness and drinking but found none.
+          Still, if loneliness causes people to smoke, it is important to alert smoking cessation services so they can add this factor as they help people to quit, the study authors said.
+          The report was published June 16 in the journal Addiction.&lt;/value&gt;
+    &lt;/news&gt;
+  &lt;/corpus&gt;
+&lt;/data&gt;</code></pre>
+<p><em>an example of the output:</em></p>
+<pre><code class="language-python">New Portuguese skull may be an early relative of Neandertals:
+skull year member genus trait
+
+Loneliness May Make Quitting Smoking Even Tougher:
+study loneliness author wootton university
+</code></pre>
