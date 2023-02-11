@@ -282,6 +282,18 @@ files:
     if __name__ == '__main__':
         KTETest().run_tests()
   learner_created: false
-feedback_link: https://hyperskill.org/projects/166/stages/860/implement#comment
-status: Unchecked
+- name: xml_read.py
+  visible: true
+  learner_created: true
+- name: data.py
+  visible: true
+  learner_created: true
+- name: tokens.py
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/12369#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 11 Feb 2023 20:14:47 UTC"
 record: -1

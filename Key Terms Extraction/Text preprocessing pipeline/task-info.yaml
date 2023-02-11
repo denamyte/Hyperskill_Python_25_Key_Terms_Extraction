@@ -281,6 +281,6 @@ files:
     if __name__ == '__main__':
         KTETest().run_tests()
   learner_created: false
-feedback_link: https://hyperskill.org/projects/166/stages/861/implement#comment
+feedback_link: https://hyperskill.org/learn/step/12370#comment
 status: Unchecked
 record: -1
