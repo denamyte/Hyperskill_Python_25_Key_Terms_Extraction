@@ -289,6 +289,70 @@ files:
     if __name__ == '__main__':
         KTETest().run_tests()
   learner_created: false
+- name: xml_read.py
+  visible: true
+  text: |
+    from typing import List
+
+    from lxml import etree
+    from data import News
+
+
+    def parse_xml() -> List[News]:
+        tree = etree.parse('news.xml')
+        corpus = tree.getroot()[0]
+        return [News(item[0].text, item[1].text) for item in corpus]
+  learner_created: true
+- name: data.py
+  visible: true
+  text: |
+    from dataclasses import dataclass, field
+    from typing import List
+
+
+    @dataclass
+    class News:
+        headline: str
+        text: str
+        most_common: List[str] = field(init=False)
+
+        def __str__(self):
+            return f'''\
+    {self.headline}:
+    {" ".join(self.most_common)}'''
+  learner_created: true
+- name: pipeline.py
+  visible: true
+  text: |
+    import string
+    from collections import Counter
+    from typing import List
+
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    from nltk import WordNetLemmatizer
+
+    STOPWORDS = stopwords.words('english')
+    lemma = WordNetLemmatizer()
+
+
+    def tokenize_and_pipeline(text: str) -> List[str]:
+        tokens = sorted(word_tokenize(text.lower()), reverse=True)
+        tokens = filter(remain_token, tokens)
+        tokens = (map(lemma.lemmatize, tokens))
+        tokens = filter(lambda t: len(t) > 1, tokens)
+        mc = Counter(tokens).most_common(5)
+        return [tpl[0] for tpl in mc]
+
+
+    def remain_token(token: str) -> bool:
+        return not token.startswith("'") \
+               and token not in STOPWORDS \
+               and token not in string.punctuation
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/12371#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Mon, 13 Feb 2023 14:52:35 UTC"
 record: -1

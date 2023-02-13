@@ -1,25 +1,31 @@
 import string
 from collections import Counter
-from typing import List
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from nltk import WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
+from nltk.tag import pos_tag
 
-STOPWORDS = stopwords.words('english')
+from data import News
+
 lemma = WordNetLemmatizer()
+EXCLUDED = set(stopwords.words('english') + list(string.punctuation)
+               + ['people'])
 
 
-def tokenize_and_pipeline(text: str) -> List[str]:
-    tokens = sorted(word_tokenize(text.lower()), reverse=True)
-    tokens = filter(remain_token, tokens)
-    tokens = (map(lemma.lemmatize, tokens))
-    tokens = filter(lambda t: len(t) > 1, tokens)
-    mc = Counter(tokens).most_common(5)
-    return [tpl[0] for tpl in mc]
+def tokenize_and_pipeline(news: News):
+    tokens = word_tokenize(news.text.lower())
+    tokens = [t for t in tokens if remain_token(t)]
+    tokens = [lemma.lemmatize(t) for t in tokens]
+    tagged = pos_tag(tokens)
+    nouns = [w for w, tag in tagged if tag.startswith('NN')]
+    sorted_nouns = sorted(nouns, reverse=True)
+    counter = Counter(sorted_nouns)
+    mc = counter.most_common(5)
+    news.most_common = [tpl[0] for tpl in mc]
 
 
 def remain_token(token: str) -> bool:
     return not token.startswith("'") \
-           and token not in STOPWORDS \
-           and token not in string.punctuation
+           and len(token) > 1 \
+           and token not in EXCLUDED
