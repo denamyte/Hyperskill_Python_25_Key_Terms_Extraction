@@ -3,25 +3,24 @@ from hstest.test_case import TestCase
 from hstest.check_result import CheckResult
 from .news import news_text
 
-answer = {'Brain Disconnects During Sleep:': ["cortex", "sleep", "activity", "tm", "brain", "consciousness", "tononi"],
-          'New Portuguese skull may be an early relative of Neandertals:': ["skull", "year", "trait", "member",
-                                                                            "genus"],
-          'Living by the coast could improve mental health:': ['health', 'coast', 'research', 'le', 'town', 'household'],
-          'Did you knowingly commit a crime? Brain scans could tell:': ["brain", "study", "suitcase", "result",
-                                                                        "security", "scenario"],
-          'Computer learns to detect skin cancer more accurately than doctors:': ["dermatologist", "year", "skin",
-                                                                                  "university", "team", "cancer",
-                                                                                  "melanoma"],
-          'US economic growth stronger than expected despite weak demand:': ["quarter", "year", "rate", "growth",
-                                                                             "economy"],
-          'Microsoft becomes third listed US firm to be valued at $1tn:': ["share", "market", "company", "value",
-                                                                           "revenue", "microsoft", "cloud"],
-          "Apple's Siri is a better rapper than you:": ["siri", "time", "rizzo", "rhyme", "producer"],
-          'Netflix viewers like comedy for breakfast and drama at lunch:': ["viewing", "show", "netflix", "day",
-                                                                            "comedy", "viewer", "tv"],
-          'Loneliness May Make Quitting Smoking Even Tougher:': ["study", "loneliness", "author", "wootton", "university",
-                                                                 "treur"]}
-
+answer = {'Brain Disconnects During Sleep:': ["cortex", "consciousness", "tononi", "sleep", "communication", "say"],
+          'New Portuguese skull may be an early relative of Neandertals:': ["skull", "genus", "member", "trait",
+                                                                            "ridge", "neandertal", "fossil", "europe"],
+          'Living by the coast could improve mental health:': ["health", "coast", "household", "town", "sea",
+                                                               "mental", "living", "live"],
+          'Did you knowingly commit a crime? Brain scans could tell:': ["brain", "say", "suitcase", "security", "scenario",
+                                                                        "study", "people", "study"],
+          'Computer learns to detect skin cancer more accurately than doctors:': ["melanoma", "skin", "dermatologist",
+                                                                                  "lesion", "cnn", "cancer"],
+          'US economic growth stronger than expected despite weak demand:': ["rate", "growth", "quarter", "economy",
+                                                                             "investment", "economic"],
+          'Microsoft becomes third listed US firm to be valued at $1tn:': ["share", "microsoft", "market", "cloud",
+                                                                           "company", "1tn"],
+          "Apple's Siri is a better rapper than you:": ["siri", "rhyme", "rizzo", "producer", "mc", "young", "like"],
+          'Netflix viewers like comedy for breakfast and drama at lunch:': ["netflix", "day", "comedy", "tv", "schedule",
+                                                                            "viewing", "viewer"],
+          'Loneliness May Make Quitting Smoking Even Tougher:': ["loneliness", "study", "author", "wootton", "treur",
+                                                                 "smoking", "smoke", "people", "quit"]}
 
 
 class KTETest(StageTest):
@@ -32,14 +31,14 @@ class KTETest(StageTest):
 
     def check(self, reply, attach):
         lines = reply.split('\n')
-        while "" in lines:
+        while ("" in lines):
             lines.remove("")
         headers = lines[::2]
         text = lines[1::2]
         news_text = []
         for row in text:
             row = row.split(' ')
-            while "" in row:
+            while ("" in row):
                 row.remove("")
             news_text.append(row)
         news = {}

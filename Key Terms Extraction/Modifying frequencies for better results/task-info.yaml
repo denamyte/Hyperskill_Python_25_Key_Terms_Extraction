@@ -288,6 +288,77 @@ files:
     if __name__ == '__main__':
         KTETest().run_tests()
   learner_created: false
+- name: xml_read.py
+  visible: true
+  text: |
+    from typing import List
+
+    from lxml import etree
+    from data import News
+
+
+    def parse_xml() -> List[News]:
+        tree = etree.parse('news.xml')
+        corpus = tree.getroot()[0]
+        return [News(item[0].text, item[1].text) for item in corpus]
+  learner_created: true
+- name: data.py
+  visible: true
+  text: |
+    from dataclasses import dataclass, field
+    from typing import List
+
+
+    @dataclass
+    class News:
+        headline: str
+        text: str
+        most_common: List[str] = field(init=False)
+
+        def __str__(self):
+            return f'''\
+    {self.headline}:
+    {" ".join(self.most_common)}'''
+  learner_created: true
+- name: pipeline.py
+  visible: true
+  text: |
+    import string
+    from collections import Counter
+
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    from nltk.stem import WordNetLemmatizer
+    from nltk.tag import pos_tag
+
+    from data import News
+
+    lemma = WordNetLemmatizer()
+    EXCLUDED = set(stopwords.words('english') + list(string.punctuation)
+                   + ['people'])
+
+
+    def tokenize_and_pipeline(news: News):
+        tokens = word_tokenize(news.text.lower())
+        tokens = [t for t in tokens if remain_token(t)]
+        tokens = [lemma.lemmatize(t) for t in tokens]
+        tagged = pos_tag(tokens)
+        nouns = [w for w, tag in tagged if tag.startswith('NN')]
+        sorted_nouns = sorted(nouns, reverse=True)
+        counter = Counter(sorted_nouns)
+        mc = counter.most_common(5)
+        news.most_common = [tpl[0] for tpl in mc]
+
+
+    def remain_token(token: str) -> bool:
+        return not token.startswith("'") \
+               and len(token) > 1 \
+               and token not in EXCLUDED
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/12372#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: "Wed, 15 Feb 2023 01:48:15 UTC"
 record: -1
